@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+				http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+				http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+
+	<!-- ############### //Bean 설정값들을 선언하는 곳 ############## -->
+	<context:component-scan base-package="project.impl" />
+	
+	
+	        <!--
+	<bean id="getPOOQChannelInfo"			class="project.schedule.PooqChannelSchedule"/>
+	<bean id="getPOOQProgramGroup"			class="project.schedule.PooqProgramSchedule"/>
+	<bean id="getPOOQPogramEpisode"			class="project.schedule.PooqEpisodeSchedule"/>
+	
+	<bean id="getLGUChannelSchedule"		class="project.schedule.LGUplusSchedule"/>
+	<bean id="getHMallSchedule"				class="project.schedule.HMallSchedule"/>
+	
+	<bean id="getSvcSchedule"				class="project.schedule.SVCSchedule"/>
+
+	<task:scheduled-tasks>
+			<task:scheduled ref="getLGUChannelSchedule" method="getChannelInfo" cron="0 0 0/1 * * ?" />
+			<task:scheduled ref="getPOOQChannelInfo"        method="getChannelInfo" cron="0 10 0/1 * * ?" />
+			<task:scheduled ref="getPOOQProgramGroup"       method="getProgramGroup" cron="0 20 0/1 * * ?" />
+			<task:scheduled ref="getPOOQPogramEpisode"      method="getProgramEpisode" cron="0 30 0/1 * * ?" />
+		<task:scheduled ref="getHMallSchedule"		method="getScheduleProduct" cron="0 0 0/1 * * ?" />
+		<task:scheduled ref="getSvcSchedule"		method="getNowProducts" cron="0 1/1 * * * ?" />
+	</task:scheduled-tasks>
+			-->
+        <!--
+        <task:scheduled-tasks>
+                <task:scheduled ref="getHMallSchedule"          method="getScheduleProduct" cron="0 40 0/1 * * ?" />
+                <task:scheduled ref="getSvcSchedule" method="getNowProducts" cron="0/30 * * * * ?" />
+                <task:scheduled ref="getLGUChannelSchedule" method="getChannelInfo" cron="0 0/5 * * * ?" />
+                <task:scheduled ref="getPOOQChannelInfo"        method="getChannelInfo" cron="0 1/5 * * * ?" />
+                <task:scheduled ref="getPOOQProgramGroup"       method="getProgramGroup" cron="0 2/5 * * * ?" />
+                <task:scheduled ref="getPOOQPogramEpisode"      method="getProgramEpisode" cron="0 3/5 * * * ?" />
+                <task:scheduled ref="getHMallSchedule"          method="getScheduleProduct" cron="0 4/5 * * * ?" />
+        </task:scheduled-tasks>
+        <context:component-scan base-package="project.schedule"/>
+                <task:scheduled ref="getHMallSchedule"          method="getScheduleProduct" cron="0 * * * * ?" />
+                <task:scheduled ref="getLGUChannelSchedule" method="getChannelInfo" cron="0 * * * * ?" />
+                <task:scheduled ref="getPOOQChannelInfo"        method="getChannelInfo" cron="0 * * * * ?" />
+                <task:scheduled ref="getPOOQProgramGroup"       method="getProgramGroup" cron="0 * * * * ?" />
+                <task:scheduled ref="getPOOQPogramEpisode"      method="getProgramEpisode" cron="0 * * * * ?" />
+         -->
+
+	
+	
+</beans>	

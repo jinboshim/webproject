@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+				http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+
+	<context:annotation-config />
+
+	<!-- 외부 설정 파일 위치 -->
+	<context:property-placeholder order="1" ignore-unresolvable="true" location="classpath:conf/${config.path}/db.properties" />
+	<context:property-placeholder order="2" ignore-unresolvable="true" location="classpath:conf/${config.path}/file_upload.properties" />
+
+
+	<bean id="dataSource_mysql" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="user" value="${mysql.userid}" />
+		<property name="password" value="${mysql.pass}" />
+		<property name="driverClass" value="${mysql.driver}" />
+		<property name="jdbcUrl" value="${mysql.url}" />
+		<!-- 
+		<property name="initialPoolSize" value="${jdbc.db1.initialPoolSize}" />
+		<property name="maxPoolSize" value="${jdbc.db1.maxPoolSize}" />
+		<property name="minPoolSize" value="${jdbc.db1.minPoolSize}" />
+		<property name="acquireIncrement" value="${jdbc.db1.acquireIncrement}" />
+		<property name="acquireRetryAttempts" value="${jdbc.db1.acquireRetryAttempts}" />
+		<property name="autoCommitOnClose" value="${jdbc.db1.autoCommitOnClose}" />
+		 -->
+	</bean>
+	<bean id="sqlMapClient_mysql" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis/sql-map-config.xml" />
+		<property name="mapperLocations" value="classpath:mybatis/sqlmaps/*.xml" />
+		<property name="dataSource" ref="dataSource_mysql" />
+	</bean>
+	<bean id="mysqlCommonDao" class="pporan.maven.framework.db.SqlMapCommonDao">
+		<property name="sqlSessionFactory" ref="sqlMapClient_mysql"/>
+	</bean>
+	<bean id="txManager_mysql" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource_mysql"></property>
+	</bean>
+	<tx:annotation-driven transaction-manager="txManager_mysql"/>
+<!-- 
+	<bean id="dataSource_db2" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="user" value="${jdbc.db2.username}" />
+		<property name="password" value="${jdbc.db2.password}" />
+		<property name="driverClass" value="${jdbc.db2.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.db2.url}" />
+		< ! - - 
+		<property name="initialPoolSize" value="${jdbc.db2.initialPoolSize}" />
+		<property name="maxPoolSize" value="${jdbc.db2.maxPoolSize}" />
+		<property name="minPoolSize" value="${jdbc.db2.minPoolSize}" />
+		<property name="acquireIncrement" value="${jdbc.db2.acquireIncrement}" />
+		<property name="acquireRetryAttempts" value="${jdbc.db2.acquireRetryAttempts}" />
+		<property name="autoCommitOnClose" value="${jdbc.db2.autoCommitOnClose}" />
+		 - - >
+	</bean>
+	<bean id="sqlMapClient_db2" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis/sql-map-config.xml" />
+		<property name="mapperLocations" value="classpath:mybatis/sqlmaps/*.xml" />
+		<property name="dataSource" ref="dataSource_db2" />
+	</bean>
+	<bean id="db2CommonDao" class="org.pporan.framework.db.SqlMapCommonDao">
+		<property name="sqlSessionFactory" ref="sqlMapClient_db2"/>
+	</bean>	
+	<bean id="txManager_db2" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource_db2"></property>
+	</bean>
+	<tx:annotation-driven transaction-manager="txManager_db2"/>
+ -->
+	
+	
+	
+	
+	
+	
+	<bean id="databaseHandler" class="pporan.maven.framework.db.DatabaseHandler" autowire="byName" />
+	
+	<!-- 파일 업로드 설정 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="${upload.default.limit.size}" />
+	</bean>
+
+</beans>	

@@ -1,0 +1,7 @@
+/conf/
+/log.properties
+/logback.xml
+/mybatis/
+/pporan/
+/project/
+/spring/

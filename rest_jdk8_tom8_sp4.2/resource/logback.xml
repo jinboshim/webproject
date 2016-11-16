@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+<!-- 30초마다 설정 파일의 변경을 확인한다. 파일이 변경되면 다시 로딩한다
+<configuration scan="true" scanPeriod="30 seconds">
+ -->
+
+	<!-- 외부 설정파일을 사용할 수 있다. -->
+	<property resource="log.properties"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm} %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+    
+    
+	<appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/mylog.txt</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${LOG_PATH}/mylog-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
+			<!-- maxHIstory 설정은 위 부분에 롤링 정책에 따라 적용되 된다고 보면된다. 위 설정데로 라면 30일이 지난 파일은 삭제가 된다. -->
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%date %-4relative [%thread] %-5level : %msg%n</pattern>
+		</encoder>
+	</appender>
+ 
+    <logger name="example.logback.level.grandparents" level="INFO"/>
+    <logger name="example.logback.level.grandparents.parents.children" level="INFO"/>
+    
+    <if condition='property("RUN_MODE").equals("real")'>
+    	<then>
+		    <root level="warn">
+		        <appender-ref ref="STDOUT" />
+		        <appender-ref ref="ROLLING" />
+		    </root>
+    	</then>
+    	<else>
+		    <root level="debug">
+		        <appender-ref ref="STDOUT" />
+		        <appender-ref ref="ROLLING" />
+		    </root>
+    	</else>
+    </if>
+</configuration>
